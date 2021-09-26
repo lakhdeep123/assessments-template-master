@@ -1,11 +1,10 @@
 import React ,{useState,useEffect} from 'react'
 import axios from 'axios';
 import ReactModal from 'react-modal';
-//import { Overlay,content } from 'react-bootstrap';
 let checkData =true;
 let originalSate =[];
 
-//ReactModal.setAppElement('#root')
+ReactModal.setAppElement('#root')
 function CountryDetails()
 {
     
@@ -14,7 +13,9 @@ function CountryDetails()
     const[countrydetails,GetCountryInfo] = useState([])
     const[countryName,AddCountries] = useState("")
     const[name,SetName] = useState("")
-    const[modalInfo,SetModalInfo] = useState("")
+    const[capitalName,SetCapital] = useState("")
+    const[language,SeLanguage] = useState("")
+    const[currency,SetCurrency] = useState("")
     const[modalIsOpen,setModalIsOpen] = useState(false)
     const jsondata=[
         {
@@ -215,29 +216,18 @@ function CountryDetails()
 
     const handleClick = function(countryName)
     {
-        debugger;
-        //toggle();
-        var langArr=[]; var currencyArr=[];
+       
         
          const countryInfo = countrylist.filter(function (el) {
-           debugger;
+        
             return  (el.name.toLowerCase().indexOf(countryName.toLowerCase()) !== -1 )
            
         });
-        debugger;
-        // countryInfo[0].languages.filter(function (el) {
-        //     //
-        //  return langArr.push(el.name);
-        // });
-        // countryInfo[0].currencies.filter(function (el) {
-        //     //
-        //  return currencyArr.push(el.symbol +el.name);
-        // });
-        
-        SetModalInfo( "Captial Of " + countryName  +" is " + countryInfo[0].capital + " , Lanaguges " + countryInfo[0].languages[0].name
-        + " , Currency  is : " +countryInfo[0].currencies[0].symbol + countryInfo[0].currencies[0].name
-        );
-        
+     
+        SeLanguage(countryInfo[0].languages[0].name);
+        SetCapital(countryInfo[0].capital);
+        SetCurrency(countryInfo[0].currencies[0].symbol + countryInfo[0].currencies[0].name);
+       
         setModalIsOpen(true);
 
       };
@@ -364,9 +354,24 @@ function CountryDetails()
                 }
 }
              }>
-                <h2>
-                  {modalInfo}
-                </h2>
+                 
+                    
+                    <table>
+                    <tr><td>
+                        Capital Name : 
+                    </td><td>{capitalName}</td>
+                    </tr>
+                    <tr><td>
+                        Language : 
+                    </td><td>{language}</td>
+                    </tr>
+                    <tr><td>
+                        Currency  : 
+                    </td><td>{currency}</td>
+                    </tr>
+                     </table>
+                     <br/><br/>
+                
                 
                 <div>
                 <button  onClick={() => setModalIsOpen(false)}>Close</button>
