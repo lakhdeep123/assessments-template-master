@@ -277,35 +277,32 @@ function CountryDetails()
             }
            
     });
-    useEffect(() =>
-    {
-       
-        if(countryName!="")
-        {
 
-          axios.get("https://restcountries.eu/rest/v2/name/" +countryName)
-          .then(res => 
-            GetCountryInfo(res.data)
-            )
-          .catch(err => {
-            console.log(err) })
-          }
-    });
+    //API no longer working 
+
+    // useEffect(() =>
+    // {
+       
+    //     if(countryName!="")
+    //     {
+
+    //       axios.get("https://restcountries.eu/rest/v2/name/" +countryName)
+    //       .then(res => 
+    //         GetCountryInfo(res.data)
+    //         )
+    //       .catch(err => {
+    //         console.log(err) })
+    //       }
+    // });
 
     const handleClick = function(countryName)
     {
-       
-        
          const countryInfo = countrylist.filter(function (el) {
-        
-            return  (el.name.toLowerCase().indexOf(countryName.toLowerCase()) !== -1 )
-           
+              return  (el.name.toLowerCase().indexOf(countryName.toLowerCase()) !== -1 )
         });
-     
         SeLanguage(countryInfo[0].languages[0].name);
         SetCapital(countryInfo[0].capital);
         SetCurrency(countryInfo[0].currencies[0].symbol + countryInfo[0].currencies[0].name);
-       
         setModalIsOpen(true);
 
       };
@@ -357,6 +354,9 @@ function CountryDetails()
         <div>
            
         <div>
+            <div>
+            <h2>Countries Infomation Statistics</h2>
+            </div>
             <label>Search by Country Name or Code  </label>
         <input placeholder=" Enter Value" id="txt_Name" type="text" onChange={e => handleFilter(e.target.value)} ></input>
         </div>
@@ -371,6 +371,7 @@ function CountryDetails()
                     <tr>
                       
                         <th  className="" scope="col">Country Name</th> 
+                        <th  className="" scope="col">Calling Codes</th> 
                         <th scope="col">Capital
                         </th> 
                         <th scope="col">Population <button  onClick={() => SortbyAscDesc("ASC")} >Sort ASC</button><button  onClick={() => SortbyAscDesc("DESC")} >Sort Desc</button></th> 
@@ -384,7 +385,9 @@ function CountryDetails()
     
       <td ><a href="#" className="button-default" onClick={() => handleClick(countries.name)} >{countries.name}</a></td>
     
-    
+      <td >{countries.callingCodes}
+      </td>
+
       <td >{countries.capital}
       </td>
    
