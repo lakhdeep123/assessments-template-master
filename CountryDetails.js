@@ -3,9 +3,11 @@ import axios from 'axios';
 import ReactModal from 'react-modal';
 let checkData =true;
 let originalSate =[];
+
+ReactModal.setAppElement('#root')
 function CountryDetails()
 {
-    const {isShowing, toggle} = useModal();
+    
     
     const[countrylist,GetCountriesList] = useState([])
     const[countrydetails,GetCountryInfo] = useState([])
@@ -299,11 +301,8 @@ function CountryDetails()
               return 1;
           return 0;
       });
-     
        
    }
-
-     
 
     return(
       
