@@ -1,10 +1,11 @@
 import React ,{useState,useEffect} from 'react'
 import axios from 'axios';
 import ReactModal from 'react-modal';
+//import { Overlay,content } from 'react-bootstrap';
 let checkData =true;
 let originalSate =[];
 
-ReactModal.setAppElement('#root')
+//ReactModal.setAppElement('#root')
 function CountryDetails()
 {
     
@@ -352,7 +353,17 @@ function CountryDetails()
            
             <div >
            
-            <ReactModal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
+            <ReactModal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} 
+             style ={
+{
+                Overlay:{
+                    backgroundColor :'grey'
+                },
+                content:{
+                    color :'orange'
+                }
+}
+             }>
                 <h2>
                   {modalInfo}
                 </h2>
