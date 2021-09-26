@@ -1,7 +1,5 @@
 import React ,{useState,useEffect} from 'react'
 import axios from 'axios';
-import useModal from './useModal';
-import Modal from './PopModal';
 import ReactModal from 'react-modal';
 let checkData =true;
 let originalSate =[];
@@ -316,9 +314,6 @@ function CountryDetails()
             <label>Search by Country Name or Code  </label>
         <input placeholder=" Enter Value" id="txt_Name" type="text" onChange={e => handleFilter(e.target.value)} ></input>
         </div>
-            
-               
-              
                 <div className="card">
   <div className="card-header">
    
@@ -357,9 +352,7 @@ function CountryDetails()
                 </div></div>
            
             <div >
-           {/* <Modal  isShowing={isShowing}  hide={toggle} />  */}
            
-           {/* <button  onClick={() => setModalIsOpen(true)}>Open Modal</button> */}
             <ReactModal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
                 <h2>
                   {modalInfo}
