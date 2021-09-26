@@ -1,22 +1,198 @@
 import React ,{useState,useEffect} from 'react'
 import axios from 'axios';
+import useModal from './useModal';
+import Modal from './PopModal';
+let checkData =true;
+let originalSate =[];
 function CountryDetails()
 {
+    const {isShowing, toggle} = useModal();
     
     const[countrylist,GetCountriesList] = useState([])
     const[countrydetails,GetCountryInfo] = useState([])
     const[countryName,AddCountries] = useState("")
     const[name,SetName] = useState("")
-    const[code,SetCode] = useState("")
-     
+    const jsondata=[
+        {
+              "name": "Germany",
+              "topLevelDomain": [
+                  ".de"
+              ],
+              "alpha2Code": "DE",
+              "alpha3Code": "DEU",
+              "callingCodes": [
+                  "49"
+              ],
+              "capital": "Berlin",
+              "altSpellings": [
+                  "DE",
+                  "Federal Republic of Germany",
+                  "Bundesrepublik Deutschland"
+              ],
+              "region": "Europe",
+              "subregion": "Western Europe",
+              "population": 81770900,
+              "latlng": [
+                   51,
+                   9
+              ],
+               "demonym": "German",
+               "area": 357114,
+               "gini":  28.3,
+               "timezones": [
+                   "UTC+01:00"
+              ],
+              "borders": [
+                  "AUT",
+                  "BEL",
+                  "CZE",
+                  "DNK",
+                  "FRA",
+                  "LUX",
+                  "NLD",
+                  "POL",
+                  "CHE"
+              ],
+              "nativeName": "Deutschland",
+              "numericCode": "276",
+              "currencies": [
+                  {
+                      "code": "EUR",
+                      "name": "Euro",
+                      "symbol": "€"
+                  }
+              ],
+              "languages": [
+                  {
+                      "iso639_1": "de",
+                      "iso639_2": "deu",
+                      "name": "German",
+                      "nativeName": "Deutsch"
+                  }
+              ],
+              "translations": {
+                  "br": "Alemanha",
+                  "de": "Deutschland",
+                  "es": "Alemania",
+                  "fa": "آلمان",
+                  "fr": "Allemagne",
+                  "hr": "Njemačka",
+                  "it": "Germania",
+                  "ja": "ドイツ",
+                  "nl": "Duitsland",
+                  "pt": "Alemanha"
+              },
+              "flag": "https://restcountries.eu/data/deu.svg",
+              "regionalBlocs": [
+                  {
+                      "acronym": "EU",
+                      "name": "European Union"
+                  }
+              ],
+              "cioc": "GER"
+          },
+          {
+            "name": "Afghanistan",
+            "topLevelDomain": [
+                ".af"
+            ],
+            "alpha2Code": "AF",
+            "alpha3Code": "AFG",
+            "callingCodes": [
+                "93"
+            ],
+            "capital": "Kabul",
+            "altSpellings": [
+                "AF",
+                "Afġānistān"
+            ],
+            "region": "Asia",
+            "subregion": "Southern Asia",
+            "population": 27657145,
+            "latlng": [
+                33,
+                65
+            ],
+            "demonym": "Afghan",
+            "area": 652230,
+            "gini": 27.8,
+            "timezones": [
+                "UTC+04:30"
+            ],
+            "borders": [
+                "IRN",
+                "PAK",
+                "TKM",
+                "UZB",
+                "TJK",
+                "CHN"
+            ],
+            "nativeName": "افغانستان",
+            "numericCode": "004",
+            "currencies": [
+                {
+                    "code": "AFN",
+                    "name": "Afghan afghani",
+                    "symbol": "؋"
+                }
+            ],
+            "languages": [
+                {
+                    "iso639_1": "ps",
+                    "iso639_2": "pus",
+                    "name": "Pashto",
+                    "nativeName": "پښتو"
+                },
+                {
+                    "iso639_1": "uz",
+                    "iso639_2": "uzb",
+                    "name": "Uzbek",
+                    "nativeName": "Oʻzbek"
+                },
+                {
+                    "iso639_1": "tk",
+                    "iso639_2": "tuk",
+                    "name": "Turkmen",
+                    "nativeName": "Türkmen"
+                }
+            ],
+            "translations": {
+                "br": "Afeganistão",
+                "de": "Afghanistan",
+                "es": "Afganistán",
+                "fa": "افغانستان",
+                "fr": "Afghanistan",
+                "hr": "Afganistan",
+                "it": "Afghanistan",
+                "ja": "アフガニスタン",
+                "nl": "Afghanistan",
+                "pt": "Afeganistão"
+            },
+            "flag": "https://restcountries.eu/data/afg.svg",
+            "regionalBlocs": [
+                {
+                    "acronym": "SAARC",
+                    "name": "South Asian Association for Regional Cooperation"
+                }
+            ],
+            "cioc": "AFG"
+        }
+         
+      ]
+    
+    
     useEffect(() =>
     {
-          axios.get("https://restcountries.eu/rest/v2/all")
-          .then(res => 
-            //console.log(  res.data )
-           GetCountriesList(res.data)
-            )
-          .catch(err => {console.log(err) })
+     
+        
+           
+           if (countrylist.length==0 && checkData)
+            {
+               /// we have to call Api for Demo Pupose we Used Json Data
+                originalSate=jsondata;
+               GetCountriesList(jsondata)
+            }
+           
     });
     useEffect(() =>
     {
@@ -26,7 +202,6 @@ function CountryDetails()
 
           axios.get("https://restcountries.eu/rest/v2/name/" +countryName)
           .then(res => 
-            //console.log(  res.data )
             GetCountryInfo(res.data)
             )
           .catch(err => {
@@ -36,73 +211,68 @@ function CountryDetails()
 
     const handleClick = function(countryName)
     {
-         AddCountries(countryName);
+        debugger;
+        toggle();
+        
+         const countryInfo = countrylist.filter(function (el) {
+            return  (el.name.toLowerCase().indexOf(countryName.toLowerCase()) !== -1 )
+           
+        });
+        debugger;
 
       };
 
-      const handleFilter = function()
+      const handleFilter = function(e)
       {
-          debugger;
-
-        //   const countries = countrylist.filter(function (e) {
-        //     return e.name == name.toUpperCase;
-        // });
-        debugger;
-           //console.log(countrylist)
-          filterCountries(countrylist,name.toUpperCase);
+         
+          GetCountriesList(originalSate)
+          filterCountries(originalSate,e);
+          
      };
 
-     function filterCountries(countrylist, query) {
-           const countries = countrylist.filter(function (el) {
-               //debugger;
-            return  el.name.toLowerCase().indexOf(name.toLowerCase()) !== -1 || el.alpha2Code.toLowerCase().indexOf(code.toLowerCase()) !== -1
+     function filterCountries(countrylist, val) {
+
+       
+        const countries = countrylist.filter(function (el) {
+           
+            return  (el.name.toLowerCase().indexOf(val.toLowerCase()) !== -1 )
+            || (el.callingCodes.indexOf(val) !== -1)
         });
-        debugger;
-          
+       
+            checkData=false;
+            GetCountriesList(countries);
+       
       }
 
       const SortbyAscDesc = function(sortbyDirection)
       {
-        //debugger;
-     // const countries = countrylist.filter(function (el) {
-      //   debugger;
-      //    countrylist.sort((a, b) => {
-      //    // debugger;
-      //     if (a.population > b.population)
-      //     return a.population-b.population;
-      //     if (a.population < b.population)
-      //         return b.population-a.population;
-      //    // return 0;
-
-      //     debugger;
-      // });
-      PopulationSort1();
+        PopulationSort1();
 
       }
 
       function PopulationSort1() {
         
-        debugger;
+        
         const countries =countrylist.sort((a, b) => {
-         // debugger;
+
           if (a.population > b.population)
           return -1;
           if (a.population < b.population)
           return 1;
          return 0;
 
-          debugger;
+          
       });
       GetCountriesList(countries)
-     debugger;
+     
        
    }
 
       function PopulationSort(countrylist) {
-        debugger;
+        
         var populations=[];
          countrylist.filter(function (el) {
-            //debugger;
+            //
          return populations.push(el.population);
      });
        const countries = populations.sort((a, b) => {
@@ -112,7 +282,7 @@ function CountryDetails()
               return 1;
           return 0;
       });
-     debugger;
+     
        
    }
 
@@ -122,11 +292,10 @@ function CountryDetails()
       
 <div className="container">
         <div>
-             
+           
         <div>
-       <input placeholder=" Country Name" id="txt_Name" type="text" onChange={e => SetName(e.target.value)} ></input>
-            <input  placeholder="Country Code " type="text_Code" onChange={e => SetCode(e.target.value)}></input>
-            <button  onClick={() => handleFilter()} >Filter</button>
+            <label>Search by Country Name or Code  </label>
+        <input placeholder=" Enter Value" id="txt_Name" type="text" onChange={e => handleFilter(e.target.value)} ></input>
         </div>
             
                
@@ -136,6 +305,7 @@ function CountryDetails()
    
   </div>
   <div className="card-body">
+      
                 <table className="table table-striped ">
                     <thead>
                     <tr>
@@ -149,10 +319,11 @@ function CountryDetails()
                 <tbody>
                {
                  
+                 
                 countrylist.map((countries,idx) =>
                 <tr>
     
-      <td ><a href="#" onClick={() => handleClick(countries.name)} >{countries.name}</a></td>
+      <td ><a href="#" className="button-default" onClick={() => handleClick(countries.name)} >{countries.name}</a></td>
     
     
       <td >{countries.capital}
@@ -165,7 +336,11 @@ function CountryDetails()
                 </tbody>
                 </table>
                 </div></div>
-            
+           
+            <div className="App">
+           <Modal  isShowing={isShowing}  hide={toggle} /> 
+          </div> 
+           
         </div>
         </div>
     )
