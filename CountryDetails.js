@@ -2,7 +2,7 @@ import React ,{useState,useEffect} from 'react'
 import axios from 'axios';
 import ReactModal from 'react-modal';
 let checkData =true;
-let originalSate =[];
+let originalState =[];
 
 ReactModal.setAppElement('#root')
 function CountryDetails()
@@ -12,7 +12,7 @@ function CountryDetails()
     const[countrylist,GetCountriesList] = useState([])
     const[countrydetails,GetCountryInfo] = useState([])
     const[countryName,AddCountries] = useState("")
-    const[name,SetName] = useState("")
+   
     const[capitalName,SetCapital] = useState("")
     const[language,SeLanguage] = useState("")
     const[currency,SetCurrency] = useState("")
@@ -181,7 +181,85 @@ function CountryDetails()
                 }
             ],
             "cioc": "AFG"
-        }
+        },
+        {
+            "name": "Test pop",
+            "topLevelDomain": [
+                ".de"
+            ],
+            "alpha2Code": "DE",
+            "alpha3Code": "DEU",
+            "callingCodes": [
+                "49"
+            ],
+            "capital": "Berlin",
+            "altSpellings": [
+                "DE",
+                "Federal Republic of Germany",
+                "Bundesrepublik Deutschland"
+            ],
+            "region": "Europe",
+            "subregion": "Western Europe",
+            "population": 6000,
+            "latlng": [
+                 51,
+                 9
+            ],
+             "demonym": "German",
+             "area": 357114,
+             "gini":  28.3,
+             "timezones": [
+                 "UTC+01:00"
+            ],
+            "borders": [
+                "AUT",
+                "BEL",
+                "CZE",
+                "DNK",
+                "FRA",
+                "LUX",
+                "NLD",
+                "POL",
+                "CHE"
+            ],
+            "nativeName": "Deutschland",
+            "numericCode": "276",
+            "currencies": [
+                {
+                    "code": "EUR",
+                    "name": "Euro",
+                    "symbol": "€"
+                }
+            ],
+            "languages": [
+                {
+                    "iso639_1": "de",
+                    "iso639_2": "deu",
+                    "name": "German",
+                    "nativeName": "Deutsch"
+                }
+            ],
+            "translations": {
+                "br": "Alemanha",
+                "de": "Deutschland",
+                "es": "Alemania",
+                "fa": "آلمان",
+                "fr": "Allemagne",
+                "hr": "Njemačka",
+                "it": "Germania",
+                "ja": "ドイツ",
+                "nl": "Duitsland",
+                "pt": "Alemanha"
+            },
+            "flag": "https://restcountries.eu/data/deu.svg",
+            "regionalBlocs": [
+                {
+                    "acronym": "EU",
+                    "name": "European Union"
+                }
+            ],
+            "cioc": "GER"
+        },
          
       ]
     
@@ -189,13 +267,13 @@ function CountryDetails()
     useEffect(() =>
     {
      
-        
+           debugger;
            
            if (countrylist.length==0 && checkData)
             {
-               /// we have to call Api for Demo Pupose we Used Json Data
-                originalSate=jsondata;
-               GetCountriesList(jsondata)
+               /// API No longer working so Used Json Data
+                originalState=jsondata;
+               GetCountriesList(jsondata);
             }
            
     });
@@ -235,8 +313,8 @@ function CountryDetails()
       const handleFilter = function(e)
       {
          
-          GetCountriesList(originalSate)
-          filterCountries(originalSate,e);
+          GetCountriesList(originalState)
+          filterCountries(originalState,e);
           
      };
 
@@ -256,44 +334,22 @@ function CountryDetails()
 
       const SortbyAscDesc = function(sortbyDirection)
       {
-        PopulationSort1();
+        PopulationSort(sortbyDirection);
 
       }
 
-      function PopulationSort1() {
-        
-        
-        const countries =countrylist.sort((a, b) => {
-
-          if (a.population > b.population)
-          return -1;
-          if (a.population < b.population)
-          return 1;
-         return 0;
-
-          
+      function PopulationSort(sortbyDirection) {
+    
+        const countries =originalState.slice().sort((a, b) => {
+        if (sortbyDirection=="ASC")
+        return a.population - b.population;
+        else if (sortbyDirection=="DESC")
+        return b.population - a.population;
       });
+    
       GetCountriesList(countries)
-     
-       
    }
 
-      function PopulationSort(countrylist) {
-        
-        var populations=[];
-         countrylist.filter(function (el) {
-            //
-         return populations.push(el.population);
-     });
-       const countries = populations.sort((a, b) => {
-          if (a > b)
-              return -1;
-          if (a < b)
-              return 1;
-          return 0;
-      });
-       
-   }
 
     return(
       
@@ -316,9 +372,8 @@ function CountryDetails()
                       
                         <th  className="" scope="col">Country Name</th> 
                         <th scope="col">Capital
-                        
                         </th> 
-                        <th scope="col"><button  onClick={() => SortbyAscDesc("Desc")} >Sort Population</button>Population</th> 
+                        <th scope="col">Population <button  onClick={() => SortbyAscDesc("ASC")} >Sort ASC</button><button  onClick={() => SortbyAscDesc("DESC")} >Sort Desc</button></th> 
                 </tr></thead>
                 <tbody>
                {
